@@ -213,7 +213,7 @@ kernel void raytrace(
 		// draw color
 		int pixel;
 		if(r >= 1)
-			pixel = 3 * ((r - 1) * width + c);
+			pixel = 3 * (r * width + c);
 		else
 			pixel = 3 * c;
 

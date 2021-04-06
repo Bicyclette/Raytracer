@@ -24,6 +24,23 @@ Application::Application(int clientWidth, int clientHeight) :
 	scenes.at(scenes.size()-1)->addPointLight(glm::vec3(5.0f, 13.0f, 5.0f), glm::vec3(0.1f), glm::vec3(0.8f), glm::vec3(1.0f), 1.0f, 1.0f, 0.045f, 0.0075f, 0.5f, 2);
 	scenes.at(scenes.size()-1)->addObject("../assets/angel/angel.obj", glm::mat4(1.0f));
 	scenes.at(scenes.size()-1)->setGridAxis(8);
+/*
+	// create boots scene
+	scenes.push_back(std::make_shared<Scene>("boots"));
+	scenes.at(scenes.size()-1)->addCamera(aspectRatio, glm::vec3(0.0f, 1.5f, 4.0f), glm::vec3(0.0f), glm::normalize(glm::vec3(0.0f, 4.0f, -1.5f)), 60.0f, 0.1f, 100.0f );
+	scenes.at(scenes.size()-1)->setActiveCamera(0);
+	scenes.at(scenes.size()-1)->addPointLight(glm::vec3(3.0f, 4.0f, 5.0f), glm::vec3(0.1f), glm::vec3(0.8f), glm::vec3(1.0f), 1.0f, 1.0f, 0.045f, 0.0075f, 0.5f, 3);
+	scenes.at(scenes.size()-1)->addObject("../assets/boots/boots.obj", glm::mat4(1.0f));
+	scenes.at(scenes.size()-1)->setGridAxis(8);
+*/
+
+	// create street light scene
+	scenes.push_back(std::make_shared<Scene>("street light"));
+	scenes.at(scenes.size()-1)->addCamera(aspectRatio, glm::vec3(0.0f, 4.0f, 10.0f), glm::vec3(0.0f), glm::normalize(glm::vec3(0.0f, 4.0f, -1.5f)), 60.0f, 0.1f, 100.0f );
+	scenes.at(scenes.size()-1)->setActiveCamera(0);
+	scenes.at(scenes.size()-1)->addPointLight(glm::vec3(0.0f, 12.0f, 0.0f), glm::vec3(0.025f), glm::vec3(0.8f), glm::vec3(1.0f), 1.0f, 1.0f, 0.045f, 0.0075f, 0.5f, 2);
+	scenes.at(scenes.size()-1)->addObject("../assets/street_light/street_light.obj", glm::mat4(1.0f));
+	scenes.at(scenes.size()-1)->setGridAxis(8);
 }
 
 void Application::drawScene(int index, int width, int height, DRAWING_MODE mode, bool debug)
@@ -206,7 +223,7 @@ void Application::colorMultisamplePass(int index, int width, int height, DRAWING
 	for(int i{0}; i < scenes.at(index)->getPLights().size(); ++i)
 	{
 		glActiveTexture(GL_TEXTURE0 + textureOffset);
-		glBindTexture(GL_TEXTURE_2D, graphics->getOmniDepthFBO(i)->getAttachments().at(0).id);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, graphics->getOmniDepthFBO(i)->getAttachments().at(0).id);
 		graphics->getBlinnPhongShader().setInt("omniDepthMap[" + std::to_string(i) + "]", textureOffset);
 		graphics->getBlinnPhongShader().setMatrix("light[" + std::to_string(i) + "].lightSpaceMatrix", glm::mat4(1.0f));
 		textureOffset++;
