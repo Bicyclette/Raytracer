@@ -1,0 +1,8 @@
+angel/angel.mtl filter=lfs diff=lfs merge=lfs -text
+angel/angel.obj filter=lfs diff=lfs merge=lfs -text
+boots/boots.mtl filter=lfs diff=lfs merge=lfs -text
+boots/boots.obj filter=lfs diff=lfs merge=lfs -text
+minecraft/minecraft.mtl filter=lfs diff=lfs merge=lfs -text
+minecraft/minecraft.obj filter=lfs diff=lfs merge=lfs -text
+street_light/street_light.mtl filter=lfs diff=lfs merge=lfs -text
+street_light/street_light.obj filter=lfs diff=lfs merge=lfs -text
