@@ -1,3 +1,0 @@
-/home/mathias/M1_IMA/IG3D/Raytracer/build/CMakeFiles/rebuild_cache.dir
-/home/mathias/M1_IMA/IG3D/Raytracer/build/CMakeFiles/edit_cache.dir
-/home/mathias/M1_IMA/IG3D/Raytracer/build/CMakeFiles/Raytracer.dir
