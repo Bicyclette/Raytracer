@@ -8,8 +8,8 @@ Are located in the assets/render folder
 Must be performed as root:
 + dnf install SDL2-devel.x86_64
 + dnf install glew-devel.x86_64
-+ dnf install assimp-devel.x86_64
-Now you need to install OpenCL
++ dnf install assimp-devel.x86_64 <br/>
+Now you need to install OpenCL <br/>
 I personnaly have a nvidia graphic card so I have done the following steps as explained here : <br/>
 <https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html#fedora-installation>
 
