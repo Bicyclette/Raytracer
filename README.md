@@ -1,6 +1,11 @@
 # RAYTRACER
 
 A basic C++ Raytracer accelerated with OpenCL.
+<br/>
+<p align="center">
+<img alt="opencl" src="img/opencl.png" width="50%" height="auto"/>
+<p/>
+<br/>
 
 ## Dependencies
 
