@@ -1,0 +1,22 @@
+{
+	"name":"raytracer",
+	"dependencies": [
+		{
+			"name":"sdl2"
+		},
+		{
+			"name":"sdl2",
+			"features":["wayland"],
+			"platform":"linux"
+		},
+		"glew",
+		"assimp",
+		"opencl"
+	],
+	"builtin-baseline": "2de7f388c5aac1f7d63c5986fe9b1b60e7d6bbb5",
+	"overrides": [
+		{ "name": "glew", "version": "2.2.0" },
+		{ "name": "assimp", "version": "5.2.5" },
+		{ "name": "opencl", "version": "2.2#8" }
+	]
+}

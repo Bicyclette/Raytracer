@@ -9,38 +9,13 @@ Application::Application(int clientWidth, int clientHeight) :
 	// window aspect ratio
 	float aspectRatio = static_cast<float>(clientWidth) / static_cast<float>(clientHeight);	
 	
-	// create minecraft scene
-	scenes.push_back(std::make_shared<Scene>("minecraft"));
-	scenes.at(scenes.size()-1)->addCamera(aspectRatio, glm::vec3(0.0f, 1.5f, 4.0f), glm::vec3(0.0f), glm::normalize(glm::vec3(0.0f, 4.0f, -1.5f)), 60.0f, 0.1f, 100.0f );
-	scenes.at(scenes.size()-1)->setActiveCamera(0);
-	scenes.at(scenes.size()-1)->addPointLight(glm::vec3(3.0f, 4.0f, 5.0f), glm::vec3(0.1f), glm::vec3(0.8f), glm::vec3(1.0f), 1.0f, 1.0f, 0.045f, 0.0075f, 0.5f, 5);
-	scenes.at(scenes.size()-1)->addObject("../assets/minecraft/minecraft.obj", glm::mat4(1.0f));
-	scenes.at(scenes.size()-1)->setGridAxis(8);
-
-	// create angel scene
-	scenes.push_back(std::make_shared<Scene>("angel"));
-	scenes.at(scenes.size()-1)->addCamera(aspectRatio, glm::vec3(0.0f, 1.5f, 4.0f), glm::vec3(0.0f), glm::normalize(glm::vec3(0.0f, 4.0f, -1.5f)), 60.0f, 0.1f, 100.0f );
-	scenes.at(scenes.size()-1)->setActiveCamera(0);
-	scenes.at(scenes.size()-1)->addPointLight(glm::vec3(5.0f, 13.0f, 5.0f), glm::vec3(0.1f), glm::vec3(0.8f), glm::vec3(1.0f), 1.0f, 1.0f, 0.045f, 0.0075f, 0.5f, 2);
-	scenes.at(scenes.size()-1)->addObject("../assets/angel/angel.obj", glm::mat4(1.0f));
-	scenes.at(scenes.size()-1)->setGridAxis(8);
-/*
-	// create boots scene
-	scenes.push_back(std::make_shared<Scene>("boots"));
-	scenes.at(scenes.size()-1)->addCamera(aspectRatio, glm::vec3(0.0f, 1.5f, 4.0f), glm::vec3(0.0f), glm::normalize(glm::vec3(0.0f, 4.0f, -1.5f)), 60.0f, 0.1f, 100.0f );
-	scenes.at(scenes.size()-1)->setActiveCamera(0);
-	scenes.at(scenes.size()-1)->addPointLight(glm::vec3(3.0f, 4.0f, 5.0f), glm::vec3(0.1f), glm::vec3(0.8f), glm::vec3(1.0f), 1.0f, 1.0f, 0.045f, 0.0075f, 0.5f, 3);
-	scenes.at(scenes.size()-1)->addObject("../assets/boots/boots.obj", glm::mat4(1.0f));
-	scenes.at(scenes.size()-1)->setGridAxis(8);
-*/
-
-	// create street light scene
-	scenes.push_back(std::make_shared<Scene>("street light"));
-	scenes.at(scenes.size()-1)->addCamera(aspectRatio, glm::vec3(0.0f, 4.0f, 10.0f), glm::vec3(0.0f), glm::normalize(glm::vec3(0.0f, 4.0f, -1.5f)), 60.0f, 0.1f, 100.0f );
-	scenes.at(scenes.size()-1)->setActiveCamera(0);
-	scenes.at(scenes.size()-1)->addPointLight(glm::vec3(0.0f, 12.0f, 0.0f), glm::vec3(0.025f), glm::vec3(0.8f), glm::vec3(1.0f), 1.0f, 1.0f, 0.045f, 0.0075f, 0.5f, 2);
-	scenes.at(scenes.size()-1)->addObject("../assets/street_light/street_light.obj", glm::mat4(1.0f));
-	scenes.at(scenes.size()-1)->setGridAxis(8);
+	// create owl scene
+	scenes.push_back(std::make_shared<Scene>("owl"));
+	scenes[0]->addCamera(aspectRatio, glm::vec3(0.0f, 1.5f, 4.0f), glm::vec3(0.0f), glm::normalize(glm::vec3(0.0f, 4.0f, -1.5f)), 60.0f, 0.1f, 100.0f );
+	scenes[0]->setActiveCamera(0);
+	scenes[0]->addPointLight(glm::vec3(1.0f, 10.0f, 5.0f), glm::vec3(0.1f), glm::vec3(0.7f), glm::vec3(1.0f), 1.0f, 1.0f, 0.045f, 0.0075f, 0.5f, 2);
+	scenes[0]->addObject("../assets/owl/owl.obj", glm::mat4(1.0f));
+	scenes[0]->setGridAxis(8);
 }
 
 void Application::drawScene(int index, int width, int height, DRAWING_MODE mode, bool debug)
@@ -86,11 +61,11 @@ void Application::drawScene(int index, int width, int height, DRAWING_MODE mode,
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 			graphics->getBlinnPhongShader().setInt("renderingDepth", 0);
 			graphics->getBlinnPhongShader().setInt("omniDepthRendering", 0);
-			graphics->getBlinnPhongShader().setVec3f("cam.viewPos", scenes.at(index)->getActiveCamera()->getPosition());
-			graphics->getBlinnPhongShader().setMatrix("view", scenes.at(index)->getActiveCamera()->getViewMatrix());
-			graphics->getBlinnPhongShader().setMatrix("proj", scenes.at(index)->getActiveCamera()->getProjectionMatrix());
-			graphics->getBlinnPhongShader().setLighting(scenes.at(index)->getPLights(), scenes.at(index)->getDLights());
-			scenes.at(index)->draw(graphics->getBlinnPhongShader(), mode, debug);
+			graphics->getBlinnPhongShader().setVec3f("cam.viewPos", scenes[index]->getActiveCamera()->getPosition());
+			graphics->getBlinnPhongShader().setMatrix("view", scenes[index]->getActiveCamera()->getViewMatrix());
+			graphics->getBlinnPhongShader().setMatrix("proj", scenes[index]->getActiveCamera()->getProjectionMatrix());
+			graphics->getBlinnPhongShader().setLighting(scenes[index]->getPLights(), scenes[index]->getDLights());
+			scenes[index]->draw(graphics->getBlinnPhongShader(), mode, debug);
 
 			// blit to normal framebuffer (resolve multisampling)
 			graphics->getNormalFBO()->bind();
@@ -119,7 +94,7 @@ void Application::resizeScreen(int clientWidth, int clientHeight)
 	#pragma omp for
 	for(int i{0}; i < scenes.size(); ++i)
 	{
-		scenes.at(i)->getActiveCamera()->updateProjectionMatrix(clientWidth, clientHeight);
+		scenes[i]->getActiveCamera()->updateProjectionMatrix(clientWidth, clientHeight);
 	}
 
 	graphics->resizeScreen(clientWidth, clientHeight);
@@ -129,7 +104,7 @@ void Application::updateSceneActiveCameraView(int index, const std::bitset<16> &
 {
 	if(index < scenes.size())
 	{
-		scenes.at(index)->getActiveCamera()->updateViewMatrix(inputs, mouse, delta);
+		scenes[index]->getActiveCamera()->updateViewMatrix(inputs, mouse, delta);
 	}
 }
 
@@ -148,19 +123,19 @@ void Application::directionalShadowPass(int index, DRAWING_MODE mode)
 	graphics->getShadowMappingShader().setMatrix("proj", graphics->getOrthoProjection());
 			
 	// render directional depth maps
-	for(int i{0}; i < scenes.at(index)->getDLights().size(); ++i)
+	for(int i{0}; i < scenes[index]->getDLights().size(); ++i)
 	{
 		graphics->getStdDepthFBO(i)->bind();
 		glClear(GL_DEPTH_BUFFER_BIT);
 
-		glm::vec3 lightPosition = scenes.at(index)->getDLights().at(i)->getPosition();
-		glm::vec3 lightTarget = lightPosition + scenes.at(index)->getDLights().at(i)->getDirection();
+		glm::vec3 lightPosition = scenes[index]->getDLights()[i]->getPosition();
+		glm::vec3 lightTarget = lightPosition + scenes[index]->getDLights()[i]->getDirection();
 		glm::mat4 lightView = glm::lookAt(lightPosition, lightTarget, glm::vec3(0.0f, 1.0f, 0.0f));
 
 		graphics->getShadowMappingShader().setMatrix("view", lightView);
 
 		// draw scene
-		scenes.at(index)->draw(graphics->getShadowMappingShader(), mode);
+		scenes[index]->draw(graphics->getShadowMappingShader(), mode);
 	}
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
@@ -175,13 +150,13 @@ void Application::omnidirectionalShadowPass(int index, DRAWING_MODE mode)
 	
 	// render omnidirectional depth maps
 	std::vector<glm::mat4> omnilightViews;
-	for(int i{0}; i < scenes.at(index)->getPLights().size(); ++i)
+	for(int i{0}; i < scenes[index]->getPLights().size(); ++i)
 	{
 		graphics->getOmniDepthFBO(i)->bind();
 		glClear(GL_DEPTH_BUFFER_BIT);
 
 		// (proj * view)
-		glm::vec3 lightPosition = scenes.at(index)->getPLights().at(i)->getPosition();
+		glm::vec3 lightPosition = scenes[index]->getPLights()[i]->getPosition();
 		omnilightViews.push_back(graphics->getOmniPerspProjection() * glm::lookAt(lightPosition, lightPosition + glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f)));
 		omnilightViews.push_back(graphics->getOmniPerspProjection() * glm::lookAt(lightPosition, lightPosition + glm::vec3(-1.0f, 0.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f)));
 		omnilightViews.push_back(graphics->getOmniPerspProjection() * glm::lookAt(lightPosition, lightPosition + glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f)));
@@ -191,10 +166,10 @@ void Application::omnidirectionalShadowPass(int index, DRAWING_MODE mode)
 
 		graphics->getShadowMappingShader().setVec3f("lightPosition", lightPosition);
 		for(int j{0}; j < 6; ++j)
-			graphics->getShadowMappingShader().setMatrix("omnilightViews[" + std::to_string(j) + "]", omnilightViews.at(j));
+			graphics->getShadowMappingShader().setMatrix("omnilightViews[" + std::to_string(j) + "]", omnilightViews[j]);
 
 		// draw scene
-		scenes.at(index)->draw(graphics->getShadowMappingShader(), mode);
+		scenes[index]->draw(graphics->getShadowMappingShader(), mode);
 	}
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
@@ -208,43 +183,43 @@ void Application::colorMultisamplePass(int index, int width, int height, DRAWING
 	// draw scene
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	graphics->getBlinnPhongShader().use();
-	graphics->getBlinnPhongShader().setInt("pointLightCount", scenes.at(index)->getPLights().size());
-	graphics->getBlinnPhongShader().setVec3f("cam.viewPos", scenes.at(index)->getActiveCamera()->getPosition());
-	graphics->getBlinnPhongShader().setMatrix("view", scenes.at(index)->getActiveCamera()->getViewMatrix());
-	graphics->getBlinnPhongShader().setMatrix("proj", scenes.at(index)->getActiveCamera()->getProjectionMatrix());
-	graphics->getBlinnPhongShader().setLighting(scenes.at(index)->getPLights(), scenes.at(index)->getDLights());
+	graphics->getBlinnPhongShader().setInt("pointLightCount", scenes[index]->getPLights().size());
+	graphics->getBlinnPhongShader().setVec3f("cam.viewPos", scenes[index]->getActiveCamera()->getPosition());
+	graphics->getBlinnPhongShader().setMatrix("view", scenes[index]->getActiveCamera()->getViewMatrix());
+	graphics->getBlinnPhongShader().setMatrix("proj", scenes[index]->getActiveCamera()->getProjectionMatrix());
+	graphics->getBlinnPhongShader().setLighting(scenes[index]->getPLights(), scenes[index]->getDLights());
 
 	// set shadow maps (point first, dir second and spot last)
-	int nbPLights = scenes.at(index)->getPLights().size();
-	int nbDLights = scenes.at(index)->getDLights().size();
+	int nbPLights = scenes[index]->getPLights().size();
+	int nbDLights = scenes[index]->getDLights().size();
 	
 	int textureOffset{3};
 	
-	for(int i{0}; i < scenes.at(index)->getPLights().size(); ++i)
+	for(int i{0}; i < scenes[index]->getPLights().size(); ++i)
 	{
 		glActiveTexture(GL_TEXTURE0 + textureOffset);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, graphics->getOmniDepthFBO(i)->getAttachments().at(0).id);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, graphics->getOmniDepthFBO(i)->getAttachments()[0].id);
 		graphics->getBlinnPhongShader().setInt("omniDepthMap[" + std::to_string(i) + "]", textureOffset);
 		graphics->getBlinnPhongShader().setMatrix("light[" + std::to_string(i) + "].lightSpaceMatrix", glm::mat4(1.0f));
 		textureOffset++;
 	}
 			
 	int depthMapIndex{0};
-	for(int i{0}; i < scenes.at(index)->getDLights().size(); ++i)
+	for(int i{0}; i < scenes[index]->getDLights().size(); ++i)
 	{
-		glm::vec3 lightPosition = scenes.at(index)->getDLights().at(i)->getPosition();
-		glm::vec3 lightTarget = lightPosition + scenes.at(index)->getDLights().at(i)->getDirection();
+		glm::vec3 lightPosition = scenes[index]->getDLights()[i]->getPosition();
+		glm::vec3 lightTarget = lightPosition + scenes[index]->getDLights()[i]->getDirection();
 		glm::mat4 lightView = glm::lookAt(lightPosition, lightTarget, glm::vec3(0.0f, 1.0f, 0.0f));
 
 		glActiveTexture(GL_TEXTURE0 + textureOffset);
-		glBindTexture(GL_TEXTURE_2D, graphics->getStdDepthFBO(depthMapIndex)->getAttachments().at(0).id);
+		glBindTexture(GL_TEXTURE_2D, graphics->getStdDepthFBO(depthMapIndex)->getAttachments()[0].id);
 		graphics->getBlinnPhongShader().setInt("depthMap[" + std::to_string(depthMapIndex) + "]", textureOffset);
 		graphics->getBlinnPhongShader().setMatrix("light[" + std::to_string(i + nbPLights) + "].lightSpaceMatrix", graphics->getOrthoProjection() * lightView);
 		depthMapIndex++;
 		textureOffset++;
 	}
 
-	scenes.at(index)->draw(graphics->getBlinnPhongShader(), mode, debug);
+	scenes[index]->draw(graphics->getBlinnPhongShader(), mode, debug);
 }
 
 void Application::setActiveScene(int index)
@@ -274,13 +249,16 @@ void Application::renderScene(std::shared_ptr<WindowManager> client, bool useGPU
 	int height = client->getHeight();
 	unsigned char* img = new unsigned char[3*width*height];
 
+	// chrono RT job
+	double t_start, t_end;
+
 	if(useGPU)
 	{
 		const int N = width*height;
 
 		// get camera ##########
 		// #####################
-		std::shared_ptr<Camera> cam = getScenes().at(activeScene)->getActiveCamera();
+		std::shared_ptr<Camera> cam = getScenes()[activeScene]->getActiveCamera();
 		glm::vec3 camPos = cam->getPosition();
 		glm::vec3 camTarget = cam->getTarget();
 		glm::vec3 camRight = cam->getRight();
@@ -296,15 +274,15 @@ void Application::renderScene(std::shared_ptr<WindowManager> client, bool useGPU
 
 		// get point light ##########
 		// ##########################
-		std::vector<std::shared_ptr<PointLight>> pLights = getScenes().at(activeScene)->getPLights();
-		std::shared_ptr<PointLight> light = pLights.at(0);
+		std::vector<std::shared_ptr<PointLight>> pLights = getScenes()[activeScene]->getPLights();
+		std::shared_ptr<PointLight> light = pLights[0];
 		float brightness = light->getBrightness();
 		glm::vec3 lightPosition = light->getPosition();
 		std::vector<glm::vec3> samplePoints = light->getSamplePoints();
 		std::unique_ptr<cl_float3[]> lightSamplePoints = std::make_unique<cl_float3[]>(samplePoints.size());
 		for(int i{0}; i < samplePoints.size(); ++i)
 		{
-			glm::vec3 sample = samplePoints.at(i);
+			glm::vec3 sample = samplePoints[i];
 			lightSamplePoints[i] = (cl_float3){sample.x, sample.y, sample.z};
 		}
 		int spCount = samplePoints.size();
@@ -315,13 +293,13 @@ void Application::renderScene(std::shared_ptr<WindowManager> client, bool useGPU
 		pl->spCount = (cl_int){spCount};
 
 		// get objects of the scene
-		std::vector<std::shared_ptr<Object>> objs = getScenes().at(activeScene)->getObjects();
+		std::vector<std::shared_ptr<Object>> objs = getScenes()[activeScene]->getObjects();
 
 		// get all meshes of the scene
 		std::vector<std::shared_ptr<Mesh>> meshes;
 		for(int i{0}; i < objs.size(); ++i)
 		{
-			std::vector<std::shared_ptr<Mesh>> current = objs.at(i)->getMeshes();
+			std::vector<std::shared_ptr<Mesh>> current = objs[i]->getMeshes();
 			meshes.insert(meshes.end(), current.begin(), current.end());
 		}
 		
@@ -339,7 +317,7 @@ void Application::renderScene(std::shared_ptr<WindowManager> client, bool useGPU
 		std::vector<int> texAttributes;
 		for(int i{0}; i < meshes.size(); ++i)
 		{
-			std::shared_ptr<Mesh> mesh = meshes.at(i);
+			std::shared_ptr<Mesh> mesh = meshes[i];
 			std::vector<Vertex> meshVertices = mesh->getVertices();
 			std::vector<int> meshIndices = mesh->getIndices();
 			Material mat = mesh->getMaterial();
@@ -348,9 +326,9 @@ void Application::renderScene(std::shared_ptr<WindowManager> client, bool useGPU
 			// vertices
 			for(int j{0}; j < meshVertices.size(); ++j)
 			{
-				glm::vec3 pos = meshVertices.at(j).position;
-				glm::vec3 norm = meshVertices.at(j).normal;
-				glm::vec2 texCoords = meshVertices.at(j).texCoords;
+				glm::vec3 pos = meshVertices[j].position;
+				glm::vec3 norm = meshVertices[j].normal;
+				glm::vec2 texCoords = meshVertices[j].texCoords;
 
 				vertices.push_back(pos.x); vertices.push_back(pos.y); vertices.push_back(pos.z);
 				vertices.push_back(norm.x); vertices.push_back(norm.y); vertices.push_back(norm.z);
@@ -373,12 +351,12 @@ void Application::renderScene(std::shared_ptr<WindowManager> client, bool useGPU
 			texturesCount.push_back(textures.size());
 			for(int j{0}; j < textures.size(); ++j)
 			{
-				unsigned char* img = textures.at(j).img;
-				texAttributes.push_back(textures.at(j).width);
-				texAttributes.push_back(textures.at(j).height);
-				texAttributes.push_back(textures.at(j).channels);
+				unsigned char* img = textures[j].img;
+				texAttributes.push_back(textures[j].width);
+				texAttributes.push_back(textures[j].height);
+				texAttributes.push_back(textures[j].channels);
 
-				for(int p{0}; p < (textures.at(j).width * textures.at(j).height * textures.at(j).channels); ++p)
+				for(int p{0}; p < (textures[j].width * textures[j].height * textures[j].channels); ++p)
 				{
 					texData.push_back(img[p]);
 				}
@@ -422,7 +400,9 @@ void Application::renderScene(std::shared_ptr<WindowManager> client, bool useGPU
 		kernel.setArg(17, (cl_int){3});
 		
 		// launch kernel on the compute device
+		t_start = omp_get_wtime();
 		clRaytrace.getCommandQueue().enqueueNDRangeKernel(kernel, cl::NullRange, N, cl::NullRange);
+		t_end = omp_get_wtime();
 
 		// get result back to host
 		clRaytrace.getCommandQueue().enqueueReadBuffer(imgBuffer, CL_TRUE, 0, 3*width*height*sizeof(unsigned char), img);
@@ -437,16 +417,17 @@ void Application::renderScene(std::shared_ptr<WindowManager> client, bool useGPU
 		std::vector<std::unique_ptr<std::thread>> threads;
 		threads.reserve(thrCount);
 
+		t_start = omp_get_wtime();
 		for(int i{0}; i < thrCount; ++i)
 		{
 			threads.push_back(std::make_unique<std::thread>(RT::raytrace, i, thrCount, &rtData, img));
-			threads.at(i)->join();
+			threads[i]->join();
 		}
+		t_end = omp_get_wtime();
 	}
 
 	// print result	
-	std::cout << "Raytracing finished." << std::endl;
-	std::cout << "Printing result" << std::endl;
+	std::cout << "Raytracing job took " << t_end - t_start << "seconds to finish." << std::endl;
 	for(int i{0}; i < width; ++i)
 	{
 		for(int j{0}; j < height; ++j)
@@ -465,7 +446,7 @@ void Application::renderScene(std::shared_ptr<WindowManager> client, bool useGPU
 			SDL_RenderDrawPoint(client->getRendererPtr(), i, (height-1) - j);
 		}
 	}
-	//SDL_RenderPresent(client->getRendererPtr());
+	SDL_RenderPresent(client->getRendererPtr());
 	
 	while(client->getShowRenderView())
 	{
@@ -495,23 +476,23 @@ int RT::raytrace(int id, int nbThr, RenderData* rtData, unsigned char* img)
 	int activeScene = app->getActiveScene();
 	
 	// get camera
-	std::shared_ptr<Camera> cam = app->getScenes().at(activeScene)->getActiveCamera();
+	std::shared_ptr<Camera> cam = app->getScenes()[activeScene]->getActiveCamera();
 	glm::vec3 camPos = cam->getPosition();
 
 	// get point light
-	std::vector<std::shared_ptr<PointLight>> pLights = app->getScenes().at(activeScene)->getPLights();
-	std::shared_ptr<PointLight> light = pLights.at(0);
+	std::vector<std::shared_ptr<PointLight>> pLights = app->getScenes()[activeScene]->getPLights();
+	std::shared_ptr<PointLight> light = pLights[0];
 	float brightness = light->getBrightness();
 	glm::vec3 lightPosition = light->getPosition();
 
 	// get objects of the scene
-	std::vector<std::shared_ptr<Object>> objs = app->getScenes().at(activeScene)->getObjects();
+	std::vector<std::shared_ptr<Object>> objs = app->getScenes()[activeScene]->getObjects();
 
 	// get all meshes of the scene
 	std::vector<std::shared_ptr<Mesh>> meshes;
 	for(int i{0}; i < objs.size(); ++i)
 	{
-		std::vector<std::shared_ptr<Mesh>> current = objs.at(i)->getMeshes();
+		std::vector<std::shared_ptr<Mesh>> current = objs[i]->getMeshes();
 		meshes.insert(meshes.end(), current.begin(), current.end());
 	}
 
@@ -545,13 +526,13 @@ int RT::raytrace(int id, int nbThr, RenderData* rtData, unsigned char* img)
 			RT::computePrimaryRay(c, r, width, height, cam, primRay);
 			for(int i{0}; i < meshes.size(); ++i)
 			{
-				if(RT::intersect(meshes.at(i), camPos, primRay, pHit, nHit, texCoords))
+				if(RT::intersect(meshes[i], camPos, primRay, pHit, nHit, texCoords))
 				{
 					fragDist = RT::distance(camPos, pHit);
 					if(fragDist < prevFragDist)
 					{
 						prevFragDist = fragDist;
-						m = meshes.at(i);
+						m = meshes[i];
 						inter = true;
 
 						fragPos = pHit;
@@ -617,7 +598,7 @@ float RT::computeShadowFactor(const glm::vec3 & fragPos, const glm::vec3 & fragN
 	std::vector<glm::vec3> rayDirections;
 	for(int i{0}; i < lightSamples.size(); ++i)
 	{
-		glm::vec3 sample = lightSamples.at(i);
+		glm::vec3 sample = lightSamples[i];
 		rayDirections.push_back(glm::normalize(sample - fragPos));
 	}
 	glm::vec3 offset = 0.001f * glm::normalize(fragNormal);
@@ -635,7 +616,7 @@ float RT::computeShadowFactor(const glm::vec3 & fragPos, const glm::vec3 & fragN
 	{
 		for(int i{0}; i < meshes.size(); ++i)
 		{
-			if(RT::intersect(meshes.at(i), rayOrigin, rayDirections.at(j), pHit, nHit, tCoords))
+			if(RT::intersect(meshes[i], rayOrigin, rayDirections[j], pHit, nHit, tCoords))
 			{
 				shadow += 1.0f;
 				break;
@@ -678,13 +659,13 @@ struct PixelShade RT::computePixelShade(std::shared_ptr<Mesh> & m, glm::vec3 & f
 
 	for(int i{0}; i < textures.size() && i < 2; ++i)
 	{
-		channels = textures.at(i).channels;
-		sampleX = static_cast<int>(fragTexCoords.x * (textures.at(i).width-1));
-		sampleY = static_cast<int>(fragTexCoords.y * (textures.at(i).height-1));
-		sampleIndex = channels * ((sampleY - 1) * textures.at(i).width + sampleX);
-		sample[0] = textures.at(i).img[sampleIndex];
-		sample[1] = textures.at(i).img[sampleIndex+1];
-		sample[2] = textures.at(i).img[sampleIndex+2];
+		channels = textures[i].channels;
+		sampleX = static_cast<int>(fragTexCoords.x * (textures[i].width-1));
+		sampleY = static_cast<int>(fragTexCoords.y * (textures[i].height-1));
+		sampleIndex = channels * ((sampleY - 1) * textures[i].width + sampleX);
+		sample[0] = textures[i].img[sampleIndex];
+		sample[1] = textures[i].img[sampleIndex+1];
+		sample[2] = textures[i].img[sampleIndex+2];
 
 		if(i == 0)
 			color = glm::vec4(sample[0] / 255.0f, sample[1] / 255.0f, sample[2] / 255.0f, 1.0f);
@@ -725,17 +706,17 @@ bool RT::intersect(std::shared_ptr<Mesh> & mesh, glm::vec3 & rayOrigin, glm::vec
 
 	for(int i{0}; i < indices.size(); i += 3)
 	{
-		glm::vec3 v0 = vertices.at(indices.at(i)).position;
-		glm::vec3 normV0 = vertices.at(indices.at(i)).normal;
-		glm::vec2 texV0 = vertices.at(indices.at(i)).texCoords;
+		glm::vec3 v0 = vertices[indices[i]].position;
+		glm::vec3 normV0 = vertices[indices[i]].normal;
+		glm::vec2 texV0 = vertices[indices[i]].texCoords;
 		
-		glm::vec3 v1 = vertices.at(indices.at(i+1)).position;
-		glm::vec3 normV1 = vertices.at(indices.at(i+1)).normal;
-		glm::vec2 texV1 = vertices.at(indices.at(i+1)).texCoords;
+		glm::vec3 v1 = vertices[indices[i+1]].position;
+		glm::vec3 normV1 = vertices[indices[i+1]].normal;
+		glm::vec2 texV1 = vertices[indices[i+1]].texCoords;
 		
-		glm::vec3 v2 = vertices.at(indices.at(i+2)).position;
-		glm::vec3 normV2 = vertices.at(indices.at(i+2)).normal;
-		glm::vec2 texV2 = vertices.at(indices.at(i+2)).texCoords;
+		glm::vec3 v2 = vertices[indices[i+2]].position;
+		glm::vec3 normV2 = vertices[indices[i+2]].normal;
+		glm::vec2 texV2 = vertices[indices[i+2]].texCoords;
 
 		if(RT::rayTriangleIntersect(rayOrigin, rayDir, v0, v1, v2, minDistance, u, v))
 		{

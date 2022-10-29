@@ -8,8 +8,7 @@
 
 void render(std::shared_ptr<WindowManager> & client, std::shared_ptr<Application> raytracer)
 {
-	// choose scene to render (0: minecraft, 1: angel, 2: boots)
-	raytracer->setActiveScene(2);
+	raytracer->setActiveScene(0);
 
 	// delta
 	double currentFrame = 0.0f;
