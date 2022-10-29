@@ -90,24 +90,24 @@ void Mesh::draw(Shader& s, bool instancing, int amount, DRAWING_MODE mode)
 	s.setInt("material.hasNormal", 0);
 	for(int i{0}; i < material.textures.size(); ++i)
 	{
-		if(material.textures.at(i).type == TEXTURE_TYPE::DIFFUSE)
+		if(material.textures[i].type == TEXTURE_TYPE::DIFFUSE)
 		{
 			glActiveTexture(GL_TEXTURE0 + i);
-			glBindTexture(GL_TEXTURE_2D, material.textures.at(i).id);
+			glBindTexture(GL_TEXTURE_2D, material.textures[i].id);
 			s.setInt("material.diffuse", i);
 			s.setInt("material.hasDiffuse", 1);
 		}
-		else if(material.textures.at(i).type == TEXTURE_TYPE::SPECULAR)
+		else if(material.textures[i].type == TEXTURE_TYPE::SPECULAR)
 		{
 			glActiveTexture(GL_TEXTURE0 + i);
-			glBindTexture(GL_TEXTURE_2D, material.textures.at(i).id);
+			glBindTexture(GL_TEXTURE_2D, material.textures[i].id);
 			s.setInt("material.specular", i);
 			s.setInt("material.hasSpecular", 1);
 		}
-		else if(material.textures.at(i).type == TEXTURE_TYPE::NORMAL)
+		else if(material.textures[i].type == TEXTURE_TYPE::NORMAL)
 		{
 			glActiveTexture(GL_TEXTURE0 + i);
-			glBindTexture(GL_TEXTURE_2D, material.textures.at(i).id);
+			glBindTexture(GL_TEXTURE_2D, material.textures[i].id);
 			s.setInt("material.normal", i);
 			s.setInt("material.hasNormal", 1);
 		}

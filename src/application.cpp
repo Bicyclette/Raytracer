@@ -165,8 +165,9 @@ void Application::omnidirectionalShadowPass(int index, DRAWING_MODE mode)
 		omnilightViews.push_back(graphics->getOmniPerspProjection() * glm::lookAt(lightPosition, lightPosition + glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, -1.0f, 0.0f)));
 
 		graphics->getShadowMappingShader().setVec3f("lightPosition", lightPosition);
-		for(int j{0}; j < 6; ++j)
+		for(int j{0}; j < 6; ++j) {
 			graphics->getShadowMappingShader().setMatrix("omnilightViews[" + std::to_string(j) + "]", omnilightViews[j]);
+		}
 
 		// draw scene
 		scenes[index]->draw(graphics->getShadowMappingShader(), mode);
@@ -234,13 +235,6 @@ int Application::getActiveScene()
 
 void Application::renderScene(std::shared_ptr<WindowManager> client, bool useGPU)
 {
-	SDL_SetWindowInputFocus(client->getRenderViewPtr());
-	SDL_ShowWindow(client->getRenderViewPtr());
-
-	// clear window
-	SDL_SetRenderDrawColor(client->getRendererPtr(), 255, 255, 255, 255);
-	SDL_RenderClear(client->getRendererPtr());
-
 	// get max number of supported threads on the machine
 	int thrCount = std::thread::hardware_concurrency();
 
@@ -402,10 +396,10 @@ void Application::renderScene(std::shared_ptr<WindowManager> client, bool useGPU
 		// launch kernel on the compute device
 		t_start = omp_get_wtime();
 		clRaytrace.getCommandQueue().enqueueNDRangeKernel(kernel, cl::NullRange, N, cl::NullRange);
-		t_end = omp_get_wtime();
 
 		// get result back to host
 		clRaytrace.getCommandQueue().enqueueReadBuffer(imgBuffer, CL_TRUE, 0, 3*width*height*sizeof(unsigned char), img);
+		t_end = omp_get_wtime();
 	}
 	else
 	{
@@ -421,50 +415,20 @@ void Application::renderScene(std::shared_ptr<WindowManager> client, bool useGPU
 		for(int i{0}; i < thrCount; ++i)
 		{
 			threads.push_back(std::make_unique<std::thread>(RT::raytrace, i, thrCount, &rtData, img));
+		}
+		for(int i{0}; i < thrCount; ++i)
+		{
 			threads[i]->join();
 		}
 		t_end = omp_get_wtime();
 	}
 
-	// print result	
-	std::cout << "Raytracing job took " << t_end - t_start << "seconds to finish." << std::endl;
-	for(int i{0}; i < width; ++i)
-	{
-		for(int j{0}; j < height; ++j)
-		{
-			int index; 
-			if(j >= 1)
-				index = 3 * ((j - 1) * width + i);
-			else
-				index = 3 * i;
+	// print computation time
+	std::cout << "Raytracing job took " << t_end - t_start << " seconds to finish." << std::endl;
 
-			int imgR = img[index];
-			int imgG = img[index+1];
-			int imgB = img[index+2];
-
-			SDL_SetRenderDrawColor(client->getRendererPtr(), imgR, imgG, imgB, 255);
-			SDL_RenderDrawPoint(client->getRendererPtr(), i, (height-1) - j);
-		}
-	}
-	SDL_RenderPresent(client->getRendererPtr());
-	
-	while(client->getShowRenderView())
-	{
-		client->checkEvents();
-
-		if(client->getUserInputs().test(6) && client->getUserInputs().test(8))
-		{
-			// save image and hide view
-			stbi_flip_vertically_on_write(1);
-			stbi_write_jpg("../assets/render/img.jpg", width, height, 3, img, 100);
-		}
-
-		client->resetEvents();
-	}
-
-	// focus back to main window and hide render view
-	SDL_SetWindowInputFocus(client->getWindowPtr());
-	SDL_HideWindow(client->getRenderViewPtr());
+	// save image
+	stbi_flip_vertically_on_write(1);
+	stbi_write_jpg("../assets/render/img.jpg", width, height, 3, img, 100);
 }
 
 int RT::raytrace(int id, int nbThr, RenderData* rtData, unsigned char* img)

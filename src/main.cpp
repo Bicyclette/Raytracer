@@ -32,7 +32,7 @@ void render(std::shared_ptr<WindowManager> & client, std::shared_ptr<Application
 		
 		// draw scene
 		raytracer->drawScene(raytracer->getActiveScene(), client->getWidth(), client->getHeight(), DRAWING_MODE::SOLID, true);
-		
+
 		client->resetEvents();
 		SDL_GL_SwapWindow(client->getWindowPtr());
 		lastFrame = currentFrame;

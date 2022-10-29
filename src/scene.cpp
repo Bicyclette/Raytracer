@@ -84,21 +84,21 @@ void Scene::draw(Shader & shader, DRAWING_MODE mode, bool debug)
 
 		for(int i{0}; i < pLights.size(); ++i)
 		{
-			pLights.at(i)->setViewMatrix(activeCamera->getViewMatrix());
-			pLights.at(i)->setProjMatrix(activeCamera->getProjectionMatrix());
-			pLights.at(i)->draw();
+			pLights[i]->setViewMatrix(activeCamera->getViewMatrix());
+			pLights[i]->setProjMatrix(activeCamera->getProjectionMatrix());
+			pLights[i]->draw();
 		}
 		for(int i{0}; i < dLights.size(); ++i)
 		{
-			dLights.at(i)->setViewMatrix(activeCamera->getViewMatrix());
-			dLights.at(i)->setProjMatrix(activeCamera->getProjectionMatrix());
-			dLights.at(i)->draw();
+			dLights[i]->setViewMatrix(activeCamera->getViewMatrix());
+			dLights[i]->setProjMatrix(activeCamera->getProjectionMatrix());
+			dLights[i]->draw();
 		}
 	}
 	
 	for(int i{0}; i < objects.size(); ++i)
 	{
-		objects.at(i)->draw(shader, mode);
+		objects[i]->draw(shader, mode);
 	}
 
 	if(sky)

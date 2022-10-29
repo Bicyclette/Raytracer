@@ -1,5 +1,7 @@
 # RAYTRACER
 
+A basic C++ Raytracer accelerated with OpenCL.
+
 ## Dependencies
 
 - [VCPKG](https://vcpkg.io/)
@@ -15,6 +17,6 @@ cmake -DCMAKE_TOOLCHAIN_FILE=${PATH_TO_VCPKG}/scripts/buildsystems/vcpkg.cmake -
 
 <img alt="owl" src="assets/render/owl.jpg"/>
 
-## how to use
-- Ctrl + R to start rendering an image
-- Ctrl + S to save an **img.jpg** image inside the folder assets/render
+## Getting started
+
+- Press **Ctrl + R** to start rendering.

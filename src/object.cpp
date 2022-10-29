@@ -59,7 +59,7 @@ void Object::draw(Shader& shader, DRAWING_MODE mode)
 	
 	for(int i{0}; i < meshCount; ++i)
 	{
-		meshes.at(i)->draw(shader, instancing, instanceModel.size(), mode);
+		meshes[i]->draw(shader, instancing, instanceModel.size(), mode);
 	}
 }
 

@@ -38,15 +38,9 @@ class WindowManager
 		int getWidth();
 		int getHeight();
 		SDL_Window* getWindowPtr();
-		SDL_Window* getRenderViewPtr();
-		SDL_Renderer* getRendererPtr();
-		bool isMainWindowFocused();
-		bool isRenderViewFocused();
 		std::array<int, 3> & getMouseData();
 		std::bitset<16> & getUserInputs();
 		bool isAlive();
-		bool getShowRenderView();
-		void setShowRenderView(bool show);
 		void checkEvents();
 		void resetEvents();
 
@@ -56,17 +50,9 @@ class WindowManager
 		int width;
 		int height;
 		bool alive;
-		bool showRenderView;
 
 		SDL_Window * window;
-		Uint32 windowID;
-		SDL_Window * renderView;
-		SDL_Renderer * renderer;
-		Uint32 renderViewID;
 		SDL_GLContext glContext;
-
-		bool mainWindowFocus;
-		bool renderViewFocus;
 
 		struct WindowEvent event;
 		std::array<int, 3> mouseData; // 0 = xRel, 1 = yRel, 2 = mouse wheel direction

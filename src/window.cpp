@@ -3,7 +3,6 @@
 WindowManager::WindowManager(const std::string& title)
 {
 	alive = true;
-	showRenderView = false;
 
 	if(SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
@@ -53,38 +52,6 @@ WindowManager::WindowManager(const std::string& title)
 		std::exit(-1);
 	}
 
-	windowID = SDL_GetWindowID(window);
-
-	// create render view window
-	renderView = SDL_CreateWindow(
-				"render view",
-				SDL_WINDOWPOS_CENTERED,
-				SDL_WINDOWPOS_CENTERED,
-				width,
-				height,
-				SDL_WINDOW_HIDDEN
-				);
-
-	if(renderView == nullptr)
-	{
-		std::cerr << SDL_GetError() << std::endl;
-		SDL_DestroyWindow(window);
-		SDL_Quit();
-		std::exit(-1);
-	}
-
-	renderViewID = SDL_GetWindowID(renderView);
-
-	// create renderer
-	renderer = SDL_CreateRenderer(renderView, -1, SDL_RENDERER_ACCELERATED);
-
-	// set focus on main window
-	SDL_SetWindowInputFocus(window);
-
-	// focus data
-	mainWindowFocus = true;
-	renderViewFocus = false;
-
 	// OpenGL stuff
 	glContext = SDL_GL_CreateContext(window);
 
@@ -115,8 +82,6 @@ WindowManager::WindowManager(const std::string& title)
 WindowManager::~WindowManager()
 {
 	SDL_GL_DeleteContext(glContext);
-	SDL_DestroyRenderer(renderer);
-	SDL_DestroyWindow(renderView);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
 }
@@ -136,26 +101,6 @@ SDL_Window* WindowManager::getWindowPtr()
 	return window;
 }
 
-SDL_Window* WindowManager::getRenderViewPtr()
-{
-	return renderView;
-}
-
-SDL_Renderer* WindowManager::getRendererPtr()
-{
-	return renderer;
-}
-
-bool WindowManager::isMainWindowFocused()
-{
-	return mainWindowFocus;
-}
-
-bool WindowManager::isRenderViewFocused()
-{
-	return renderViewFocus;
-}
-
 std::array<int, 3> & WindowManager::getMouseData()
 {
 	return mouseData;
@@ -171,16 +116,6 @@ bool WindowManager::isAlive()
 	return alive;
 }
 
-bool WindowManager::getShowRenderView()
-{
-	return showRenderView;
-}
-
-void WindowManager::setShowRenderView(bool show)
-{
-	showRenderView = show;
-}
-
 void WindowManager::checkEvents()
 {
 	event.keyboardState = SDL_GetKeyboardState(nullptr);
@@ -192,11 +127,7 @@ void WindowManager::checkEvents()
 		{
 			if(event.e.window.event == SDL_WINDOWEVENT_CLOSE)
 			{
-				Uint32 id = event.e.window.windowID;
-				if(id == windowID)
-					alive = false;
-				if(id == renderViewID)
-					showRenderView = false;
+				alive = false;
 			}
 			if(event.e.window.event == SDL_WINDOWEVENT_RESIZED)
 			{
@@ -204,26 +135,9 @@ void WindowManager::checkEvents()
 				width = event.e.window.data1;
 				height = event.e.window.data2;
 				glViewport(0, 0, width, height);
-				SDL_SetWindowSize(renderView, width, height);
-			}
-			if(event.e.window.event == SDL_WINDOWEVENT_FOCUS_GAINED)
-			{
-				Uint32 id = event.e.window.windowID;
-				if(id == windowID)
-					mainWindowFocus = true;
-				else if(id == renderViewID)
-					renderViewFocus = true;
-			}
-			if(event.e.window.event == SDL_WINDOWEVENT_FOCUS_LOST)
-			{
-				Uint32 id = event.e.window.windowID;
-				if(id == windowID)
-					mainWindowFocus = false;
-				else if(id == renderViewID)
-					renderViewFocus = false;
+				SDL_SetWindowSize(window, width, height);
 			}
 		}
-
 		if(event.e.type == SDL_MOUSEWHEEL)
 		{
 			userInputs.set(3);
@@ -254,12 +168,6 @@ void WindowManager::checkEvents()
 	if(event.keyboardState[SDL_SCANCODE_R])
 	{
 		userInputs.set(7);
-		showRenderView = true;
-	}
-	
-	if(event.keyboardState[SDL_SCANCODE_S])
-	{
-		userInputs.set(8);
 	}
 }
 
