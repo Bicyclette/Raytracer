@@ -29,8 +29,6 @@ The machine used got an Intel i5-9300H CPU and an Nvidia GTX 1660 Ti GPU.<br/>
 <br/>
 <p/>
 
-I
-
 |    Hardware   |Render time|
 |:-------------:|----------:|
 |CPU (8 threads)|163,068 sec|
