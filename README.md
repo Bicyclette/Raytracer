@@ -36,5 +36,6 @@ The machine used got an Intel i5-9300H CPU and an Nvidia GTX 1660 Ti GPU.<br/>
 
 The GPU renders that image 110 times faster than the CPU.
 
-<img alt="owl" src="assets/render/crab.bmp" align="center"/>
-
+<p align="center">
+<img alt="owl" src="assets/render/crab.bmp"/>
+<p/>
