@@ -9,12 +9,12 @@ Application::Application(int clientWidth, int clientHeight) :
 	// window aspect ratio
 	float aspectRatio = static_cast<float>(clientWidth) / static_cast<float>(clientHeight);	
 	
-	// create owl scene
-	scenes.push_back(std::make_shared<Scene>("owl"));
-	scenes[0]->addCamera(aspectRatio, glm::vec3(0.0f, 1.5f, 4.0f), glm::vec3(0.0f), glm::normalize(glm::vec3(0.0f, 4.0f, -1.5f)), 60.0f, 0.1f, 100.0f );
+	// create crab scene
+	scenes.push_back(std::make_shared<Scene>("crab"));
+	scenes[0]->addCamera(aspectRatio, glm::vec3(0.0f, 2.0f, 4.0f), glm::vec3(0.0f), glm::normalize(glm::vec3(0.0f, 4.0f, -1.5f)), 60.0f, 0.1f, 100.0f );
 	scenes[0]->setActiveCamera(0);
 	scenes[0]->addPointLight(glm::vec3(1.0f, 10.0f, 5.0f), glm::vec3(0.1f), glm::vec3(0.7f), glm::vec3(1.0f), 1.0f, 1.0f, 0.045f, 0.0075f, 0.5f, 2);
-	scenes[0]->addObject("../assets/owl/owl.obj", glm::mat4(1.0f));
+	scenes[0]->addObject("../assets/crab/crab.dae", glm::mat4(1.0f));
 	scenes[0]->setGridAxis(8);
 }
 
@@ -408,17 +408,16 @@ void Application::renderScene(std::shared_ptr<WindowManager> client, bool useGPU
 		rtData.window = client;
 
 		// start rendering on a pool of threads
-		std::vector<std::unique_ptr<std::thread>> threads;
-		threads.reserve(thrCount);
+		std::vector<std::thread> threads;
 
 		t_start = omp_get_wtime();
 		for(int i{0}; i < thrCount; ++i)
 		{
-			threads.push_back(std::make_unique<std::thread>(RT::raytrace, i, thrCount, &rtData, img));
+			threads.emplace_back(RT::raytrace, i, thrCount, &rtData, img);
 		}
 		for(int i{0}; i < thrCount; ++i)
 		{
-			threads[i]->join();
+			threads[i].join();
 		}
 		t_end = omp_get_wtime();
 	}
@@ -428,7 +427,7 @@ void Application::renderScene(std::shared_ptr<WindowManager> client, bool useGPU
 
 	// save image
 	stbi_flip_vertically_on_write(1);
-	stbi_write_jpg("../assets/render/img.jpg", width, height, 3, img, 100);
+	stbi_write_jpg("../assets/render/img.bmp", width, height, 3, img, 100);
 }
 
 int RT::raytrace(int id, int nbThr, RenderData* rtData, unsigned char* img)
@@ -483,8 +482,11 @@ int RT::raytrace(int id, int nbThr, RenderData* rtData, unsigned char* img)
 	std::shared_ptr<Mesh> m;
 	bool inter{false};
 
+	float lines_done = 0.0f;
+	const float num_lines = static_cast<float>(height / nbThr);
 	for(int r{id}; r < height; r += nbThr)
 	{
+		//std::cout << "thread " << id << " progress = " << lines_done / num_lines  << std::endl;
 		for(int c{0}; c < width; ++c)
 		{
 			RT::computePrimaryRay(c, r, width, height, cam, primRay);
@@ -530,6 +532,7 @@ int RT::raytrace(int id, int nbThr, RenderData* rtData, unsigned char* img)
 			fragDist = std::numeric_limits<float>::max();
 			prevFragDist = std::numeric_limits<float>::max();
 		}
+		//lines_done += 1.0f;
 	}
 
 	return 1;

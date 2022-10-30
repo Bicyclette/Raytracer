@@ -18,8 +18,8 @@ WindowManager::WindowManager(const std::string& title)
 		std::exit(-1);
 	}
 
-	width = ceil(r.w / 1.25f);
-	height = ceil(r.h / 1.25f);
+	width = 640;
+	height = 480;
 
 	window = nullptr;
 
@@ -135,7 +135,6 @@ void WindowManager::checkEvents()
 				width = event.e.window.data1;
 				height = event.e.window.data2;
 				glViewport(0, 0, width, height);
-				SDL_SetWindowSize(window, width, height);
 			}
 		}
 		if(event.e.type == SDL_MOUSEWHEEL)
